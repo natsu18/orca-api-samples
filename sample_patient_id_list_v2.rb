@@ -25,12 +25,24 @@ req = Net::HTTP::Post.new("/api01rv2/patientlst1v2?class=01")
 # class :02 新規対象
 #
 #
-BODY = <<EOF
 
+  puts ""
+
+  Base_StartDate=ARGV[0]
+  puts "開始日:#{Base_StartDate}"
+
+  Base_EndDate=ARGV[1]
+  puts "終了日:#{Base_EndDate}"
+
+  puts ""
+  puts "------------------------------"
+  puts ""
+
+BODY = <<EOF
 <data>
        <patientlst1req type="record">
-                <Base_StartDate type="string">2012-06-01</Base_StartDate>
-                <Base_EndDate type="string">2014-09-30</Base_EndDate>
+                <Base_StartDate type="string">#{Base_StartDate}</Base_StartDate>
+                <Base_EndDate type="string">#{Base_EndDate}</Base_EndDate>
                 <Contain_TestPatient_Flag type="string">1</Contain_TestPatient_Flag>
         </patientlst1req>
 </data>
@@ -48,7 +60,7 @@ def list_patient_xml(body)
   pinfo.each do |patient|
     puts "患者番号:#{patient["Patient_ID"]}"
     puts "名前:#{patient["WholeName"]}"
-    puts "ふりがな:#{patient["WholeName_inKana"]}"
+    puts "フリガナ:#{patient["WholeName_inKana"]}"
     puts "生年月日:#{patient["BirthDate"]}"
     if patient["Sex"]=="1"
       puts "性別:男"
@@ -58,6 +70,9 @@ def list_patient_xml(body)
     puts "登録日付:#{patient["CreateDate"]}"
     puts "更新日付:#{patient["UpdateDate"]}"
     puts ""
+    puts "******************************"
+    puts ""
+
   end
 end
 
